@@ -21,7 +21,9 @@ export class AppComponent {
     console.log('submit button clicked');
     console.log(this.zipcode);
 
-    this.service.search();
+    this.service.search().subscribe(res => {
+      console.log(res);
+    });
 
 
 
