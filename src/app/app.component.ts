@@ -12,6 +12,7 @@ export class AppComponent {
 
   title = 'parksAndRec';
   zipcode = '';
+  parks = [];
 
   constructor(private service: GooglemapsService) {
 
@@ -21,9 +22,16 @@ export class AppComponent {
     console.log('submit button clicked');
     console.log(this.zipcode);
 
-    this.service.search().subscribe(res => {
-      console.log(res);
-    });
+    this.service.search().subscribe(
+      response => {
+        console.log(response.results);
+        this.parks = response.results;
+      }
+      // ,
+      // error => {
+      //   console.log(error);
+      // }
+    );
 
 
 

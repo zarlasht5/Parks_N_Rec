@@ -34,11 +34,11 @@ export class GooglemapsService {
 
 
 
-    return this.http.get(url, httpOptions);
-    // .pipe(
-    //   retry(1),
-    //   catchError(this.handleError)
-    // )
+    return this.http.get(url, httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
   }
 
   // Error handling 
