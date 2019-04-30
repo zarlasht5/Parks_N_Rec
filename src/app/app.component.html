@@ -22,16 +22,10 @@
 <input type="text" class="form-control" name="zipcode" [(ngModel)]="zipcode">
 
 <button mat-button (click)="submit()" [disabled]="zipcode.length !=5">Search</button>
-<!-- </div>
-<h2>Here are some links to help you start: </h2> -->
-<!-- <ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul> -->
+
+
+<p *ngFor="let park of parks">{{park?.name}}</p>
+
+<mat-chip-list>
+  <mat-chip *ngFor="let park of parks">{{park?.name}}</mat-chip>
+</mat-chip-list>
