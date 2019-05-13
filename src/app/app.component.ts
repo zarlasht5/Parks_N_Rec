@@ -23,7 +23,7 @@ export class AppComponent {
     console.log('submit button clicked');
     console.log(this.zipcode);
 
-    this.service.search().subscribe(
+    this.service.search().then(
       response => {
         console.log(response.results);
         this.parks = response.results;

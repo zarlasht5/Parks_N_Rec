@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -35,10 +35,8 @@ export class GooglemapsService {
 
 
     return this.http.get(url, httpOptions)
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      )
+
+      .toPromise();
   }
 
   // Error handling 
