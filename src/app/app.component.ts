@@ -15,6 +15,7 @@ export class AppComponent {
   zipcode = '';
   parks = [];
 
+
   constructor(private service: GooglemapsService) {
 
   }
