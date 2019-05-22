@@ -3,26 +3,25 @@
 <header>
 </header>
 
-<div class="container">
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
 
-  <!-- <img class="background" src="../assets/images/park.jpg" /> -->
+  <h1>
+    Parks&nbsp;&nbsp;&nbsp;&&nbsp;&nbsp;&nbsp;Rec
+  </h1>
 
-  <div style="text-align:center">
-
-    <h1>
-      Parks&nbsp;&nbsp;&nbsp;&&nbsp;&nbsp;&nbsp;Rec
-    </h1>
-  </div>
   <img align="center" class="zelda" alt="Zelda Shield" src="../assets/images/shield.png">
+
+  <div class="projectForm">
+    <label>Zip Code</label>
+    <input type="text" class="form-control" name="zipcode" [(ngModel)]="zipcode">
+
+    <button mat-raised-button (click)="submit()" [disabled]="zipcode.length !=5">Search</button>
+  </div>
+
 </div>
 
 
-<div class="projectForm">
-  <label>Zip Code</label>
-  <input type="text" class="form-control" name="zipcode" [(ngModel)]="zipcode">
 
-  <button mat-raised-button (click)="submit()" [disabled]="zipcode.length !=5">Search</button>
-</div>
 
 <p *ngFor="let park of parks">{{park?.name}}</p>
 

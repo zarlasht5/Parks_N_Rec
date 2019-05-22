@@ -26,8 +26,10 @@ export class AppComponent {
 
     this.service.search().then(
       response => {
-        console.log(response.results);
-        this.parks = response.results;
+        let result: any = response;
+        console.log(result);
+
+        this.parks = result.results;
       }
       // ,
       // error => {
