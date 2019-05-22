@@ -17,12 +17,12 @@
 </div>
 
 
+<div class="projectForm">
+  <label>Zip Code</label>
+  <input type="text" class="form-control" name="zipcode" [(ngModel)]="zipcode">
 
-<label>Zip Code</label>
-<input type="text" class="form-control" name="zipcode" [(ngModel)]="zipcode">
-
-<button mat-button (click)="submit()" [disabled]="zipcode.length !=5">Search</button>
-
+  <button mat-raised-button (click)="submit()" [disabled]="zipcode.length !=5">Search</button>
+</div>
 
 <p *ngFor="let park of parks">{{park?.name}}</p>
 
