@@ -24,18 +24,19 @@ export class AppComponent {
     console.log('submit button clicked');
     console.log(this.zipcode);
 
-    this.service.search().then(
-      response => {
-        let result: any = response;
-        console.log(result);
+    this.parks = this.service.search(this.zipcode);
+    // .then(
+    //   response => {
+    //     let result: any = response;
+    //     console.log(result);
 
-        this.parks = result.results;
-      }
-      // ,
-      // error => {
-      //   console.log(error);
-      // }
-    );
+    //     this.parks = result.results;
+    //   }
+    //   // ,
+    //   // error => {
+    //   //   console.log(error);
+    //   // }
+    // );
 
 
 
