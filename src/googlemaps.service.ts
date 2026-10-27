@@ -1,8 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, throwError, of } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
+
+interface GeocodeResponse {
+  results: Array<{
+    geometry: {
+      location: {
+        lat: number;
+        lng: number;
+      };
+    };
+  }>;
+}
+
+interface NearbySearchResponse {
+  results: Array<{
+    name?: string;
+    vicinity?: string;
+    place_id?: string;
+  }>;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +34,7 @@ export class GooglemapsService {
 
 
   /* requires CORS - currently using an extension to allow CORS */
-  search(zip): any {
+  search(zip: string): any {
     //let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=38.6438547,-90.2854294&rankby=distance&type=park&key=REMOVED`;
     let httpOptions1 = {
       headers: new HttpHeaders({
@@ -28,10 +47,9 @@ export class GooglemapsService {
     let url1 = `https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=${this.apiKey}`;
 
 
-    this.http.get(url1, httpOptions1).toPromise().then(
+    this.http.get<GeocodeResponse>(url1, httpOptions1).toPromise().then(
 
       response => {
-        let result: any = response;
         console.log(response.results[0].geometry.location);
         let lat = response.results[0].geometry.location.lat;
         let long = response.results[0].geometry.location.lng;
@@ -51,11 +69,10 @@ export class GooglemapsService {
             .set('key', this.apiKey)
         };
 
-        this.http.get(url2, httpOptions2).toPromise().then(response => {
-          let result: any = response;
-          console.log(result);
+        this.http.get<NearbySearchResponse>(url2, httpOptions2).toPromise().then(response => {
+          console.log(response);
 
-          return result.results;
+          return response.results;
         });
       }
       // ,
@@ -72,7 +89,7 @@ export class GooglemapsService {
   }
 
   // Error handling 
-  handleError(error) {
+  handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
