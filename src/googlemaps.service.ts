@@ -4,6 +4,37 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular
 import { Observable, throwError, of } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 
+/*
+ * Developer note: how the ZIP-code park search works
+ *
+ * Flow
+ *   1. AppComponent.submit() passes the 5-digit ZIP from the input to search(zip).
+ *   2. search() calls the Google Geocoding API
+ *      (maps/api/geocode/json?address=<zip>) and reads the lat/lng of the first result.
+ *   3. It then calls the Places Nearby Search API
+ *      (maps/api/place/nearbysearch/json) with location=<lat,lng>, rankby=distance,
+ *      type=park.
+ *   4. search() returns the promise chain, which resolves to the Places `results`
+ *      array. submit() assigns it to AppComponent.parks in .then().
+ *   5. The template renders each result's `name` as a mat-chip.
+ *
+ * Verified 2026-10-28: a search for ZIP 63109 returned nearby parks when run
+ * locally with a valid API key.
+ *
+ * Known gaps (as of this note)
+ *   - The Places web service does not send CORS headers, so browser calls only
+ *     work with a CORS-disabling extension. The Access-Control-* headers set here
+ *     are response headers and have no effect on a request. A backend proxy or the
+ *     Maps JavaScript SDK (PlacesService) would remove that dependency.
+ *   - apiKey is a placeholder ('REMOVED'). Don't commit a real key; load it from
+ *     src/environments instead.
+ *   - There's no error handling. handleError() is defined but never wired in, and
+ *     an empty geocode result (invalid ZIP) throws on results[0].
+ *   - The spec (googlemaps.service.spec.ts) only checks that the service is created.
+ *     It configures no HttpClient provider, so it will likely fail to inject
+ *     HttpClient until HttpClientTestingModule is imported.
+ */
+
 interface GeocodeResponse {
   results: Array<{
     geometry: {
