@@ -21,28 +21,16 @@ export class AppComponent {
   }
 
   submit() {
-    console.log('submit button clicked');
-    console.log(this.zipcode);
+  console.log('submit button clicked');
+  console.log(this.zipcode);
 
-    this.parks = this.service.search(this.zipcode);
-    // .then(
-    //   response => {
-    //     let result: any = response;
-    //     console.log(result);
-
-    //     this.parks = result.results;
-    //   }
-    //   // ,
-    //   // error => {
-    //   //   console.log(error);
-    //   // }
-    // );
-
-
-
-
-  }
-
+  this.service.search(this.zipcode).then(
+    (response: any) => {
+      console.log(response);
+      this.parks = response;
+    }
+  );
+}
 
 
 }

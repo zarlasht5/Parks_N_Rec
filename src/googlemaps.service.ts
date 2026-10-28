@@ -47,7 +47,7 @@ export class GooglemapsService {
     let url1 = `https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=${this.apiKey}`;
 
 
-    this.http.get<GeocodeResponse>(url1, httpOptions1).toPromise().then(
+    return this.http.get<GeocodeResponse>(url1, httpOptions1).toPromise().then(
 
       response => {
         console.log(response.results[0].geometry.location);
@@ -69,7 +69,7 @@ export class GooglemapsService {
             .set('key', this.apiKey)
         };
 
-        this.http.get<NearbySearchResponse>(url2, httpOptions2).toPromise().then(response => {
+        return this.http.get<NearbySearchResponse>(url2, httpOptions2).toPromise().then(response => {
           console.log(response);
 
           return response.results;
