@@ -1,29 +1,30 @@
-# Product Requirements Document: Linter/Type-Checker Summary Task
+# Product Requirements Document: Build Command Success Check
 
-## Workflow Description
-A single agent run executes the project's linter and type checker, then reports a summary of results.
+## Task Description
+A single agent run executes the project's documented build command (`npm run build`) and reports whether it succeeds or fails, saving the summary to a report file.
+
+## Prompt
+> Run `npm run build` and report whether it succeeds or fails. If it fails, summarize the specific error message(s) that caused the failure. Save the summary to `docs/build-report.md`. Do not attempt to fix any build errors. Do not modify any source files.
 
 ## Trigger
-A human invokes the agent with the instruction: "Run the project's linter or type checker and summarize the results."
+A human invokes the agent with the prompt above.
 
 ## Decision Events
-- Does the agent have pre-approved permission to execute the required commands (`tsc`, `ng lint`, etc.)? If not, it must stop and report exactly what is blocked and why, rather than guessing at results.
-- Does the type checker report any errors? If so, list them; if not, state that it passed cleanly.
-- Does the linter report any errors or warnings? If so, categorize and summarize them by file and rule; if not, state that it passed cleanly.
-- Did the agent need to modify any files to complete the task? It should not — this is a read/report-only task.
+- Does the agent have pre-approved permission to execute `npm run build`? If not, it must stop and report exactly what is blocked and why.
+- Does the build command complete successfully (exit code 0)? If not, the agent must report the specific error(s) causing failure, not just "it failed."
+- Did the agent save its summary to the correct location (`docs/build-report.md`)?
+- Did the agent modify any file other than `docs/build-report.md`? It should not.
 
 ## Ordered Actions
 1. Agent receives the task instruction.
-2. Agent identifies the project's type-check command(s) (e.g., `tsc --noEmit` for relevant `tsconfig` files).
-3. Agent runs the type-check command(s).
-4. Agent identifies the project's lint command (e.g., `ng lint` / `tslint`).
-5. Agent runs the lint command.
-6. Agent summarizes results: pass/fail status for each check, and for any failures, a categorized list of errors by file and rule.
-7. Agent reports the summary to the human without making any file changes.
+2. Agent runs `npm run build`.
+3. Agent determines success or failure from the command's actual exit code/output.
+4. If failed, agent extracts and summarizes the specific error message(s).
+5. Agent writes the summary to `docs/build-report.md`.
+6. Agent reports completion to the human without modifying any other file.
 
 ## Falsifiable Acceptance Criteria
-- Given pre-approved permissions for the required commands, the agent successfully executes both the type checker and the linter without requiring manual intervention.
-- If either command is blocked due to missing permissions, the agent explicitly states which command was blocked and what permission would resolve it, rather than fabricating results or silently skipping the step.
-- If the linter reports errors, the summary includes the specific file, rule name, and line number for each error (not just an aggregate count).
-- The agent makes zero file modifications during this task.
-- The reported pass/fail status for each check (type-check, lint) matches the actual exit code/output of the underlying command — verifiable by re-running the command manually and comparing results.
+- Given pre-approved permission, the agent successfully executes `npm run build` without requiring manual intervention.
+- The agent's reported success/failure status matches the actual exit code of the build command, verifiable by re-running it manually.
+- If the build fails, `docs/build-report.md` contains the specific error message(s), not just a generic "build failed" statement.
+- `docs/build-report.md` is created or updated; no other file is modified.
