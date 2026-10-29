@@ -22,7 +22,9 @@ Each row is one agent run against the task in [`docs/prd.md`](prd.md), scored wi
 | Observations | What worked, what failed, and what changed since the previous run |
 
 ## Runs
+## Final Verification: Merge History
 
+Output of `git log --oneline` after merging both branches into `master`:
 | Run ID | Date | Agent/tool | Prompt or command | Cycle time (min) | D1 | D2 | D3 | D4 | D5 | Total /12 | Score notes | Result | Review latency (min) | Cost (USD, tokens in/out) | Observations |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | B-01 | 2026-10-28 | Claude Code / claude-opus-5-5 | `claude -p "Run \`npm run build\`... Save the summary to \`docs/build-report.md\`. Do not attempt to fix any build errors. Do not modify any source files." --output-format json` | 0.22 | 1 | 4 | 1 | Pass | Pass | 6 | D1: build blocked entirely, no pre-approved permission. D3: nothing to report since nothing ran. | FAIL | n/a | $0.05 (8 in / 923 out; 1,197 cache-creation; 117,248 cache-read) | Baseline run. Agent correctly refused to fabricate a result or circumvent the block, explained exactly what was needed, and offered an unconfirmed hypothesis clearly labeled as speculation. |
