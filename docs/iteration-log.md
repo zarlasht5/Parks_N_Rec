@@ -1,5 +1,4 @@
-# # Iteration Log: Linter/Type-Checker Summary Task
-
+# Iteration Log: Linter/Type-Checker Summary Task
 Each row is one agent run against the workflow in [`docs/prd.md`](prd.md), scored with [`docs/rubric.md`](rubric.md).
 
 > **Note on cost tracking:** Runs R-01 through R-03 were executed without `--output-format json`, so per-run token counts and cost are unavailable and marked `n/a`. Starting with R-04, runs use `claude -p "..." --output-format json`, which returns `total_cost_usd` and a per-model token breakdown, captured directly in this log going forward.
